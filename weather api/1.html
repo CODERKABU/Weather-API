@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    Enter Country:<input type="text" id="ctxt" /><br />
+    <input
+      type="button"
+      name="btn"
+      value="Fetch Details"
+      onclick="getWeatherApi()"
+    /><br />
+
+    City :<input type="text" id="ct" /><br />
+    Temperatur:<input type="text" id="temp" /><br />
+    Pic : <img height="70" width="70" id="pic" />
+  </body>
+
+  <script>
+    function getWeatherApi() {
+      country = document.getElementById("ctxt").value;
+
+      obj = new XMLHttpRequest();
+
+      obj.onload = function () {
+        resp = this.responseText;
+
+        //alert(resp);
+
+        jobj = JSON.parse(resp);
+
+        document.getElementById("ct").value = jobj.location.name;
+        document.getElementById("temp").value = jobj.current.temp_c;
+        document.getElementById("pic").src = jobj.current.condition.icon;
+      };
+
+      obj.open(
+        "GET",
+        "http://api.weatherapi.com/v1/current.json?key=c2bbb42f47b44a5ba4f165130240506&q=" +
+          country,
+        true
+      );
+
+      obj.send();
+    }
+  </script>
+</html>
